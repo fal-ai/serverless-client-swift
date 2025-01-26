@@ -90,7 +90,7 @@ struct StorageClient: Storage {
         return transformedInput
     }
 
-    func initiateUpload(data _: Data, ofType type: FileType) async throws -> UploadUrl {
+    func initiateUpload(ofType type: FileType) async throws -> UploadUrl {
         let input: Payload = [
             "content_type": .string(type.mimeType),
             "file_name": .string("\(UUID().uuidString).\(type.fileExtension)"),
@@ -104,7 +104,7 @@ struct StorageClient: Storage {
     }
 
     func upload(data: Data, ofType type: FileType) async throws -> String {
-        let uploadUrl = try await initiateUpload(data: data, ofType: type)
+        let uploadUrl = try await initiateUpload(ofType: type)
 
         // Upload the file to the upload URL.
         // Here we use URLSession directly instead of the client to avoid going
